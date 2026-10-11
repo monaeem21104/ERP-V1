@@ -1,6 +1,7 @@
 export class CreateBranchDto {
-  name: string;
-  companyId: number;
+  name!: string;
+  code!: string;
+  companyId!: string;
   // Additional optional fields (e.g., address) can be added later.
 }
 

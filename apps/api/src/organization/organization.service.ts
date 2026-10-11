@@ -1,30 +1,28 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCompanyDto, UpdateCompanyDto } from './dto/company.dto';
+import { CreateBranchDto, UpdateBranchDto } from './dto/branch.dto';
+import { CreateWarehouseDto, UpdateWarehouseDto } from './dto/warehouse.dto';
 
 @Injectable()
 export class OrganizationService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // Company CRUD
   async createCompany(dto: CreateCompanyDto) {
-    return this.prisma.company.create({ data: { name: dto.name } });
+    return this.prisma.company.create({ data: { name: dto.name, code: dto.code } });
   }
 
-  async getCompany(id: number) {
+  async getCompany(id: string) {
     const company = await this.prisma.company.findUnique({ where: { id } });
     if (!company) throw new NotFoundException('Company not found');
     return company;
   }
 
-  async updateCompany(id: number, dto: UpdateCompanyDto) {
-    return this.prisma.company.update({
-      where: { id },
-      data: { ...dto },
-    });
+  async updateCompany(id: string, dto: UpdateCompanyDto) {
+    return this.prisma.company.update({ where: { id }, data: dto });
   }
 
-  async deleteCompany(id: number) {
+  async deleteCompany(id: string) {
     return this.prisma.company.delete({ where: { id } });
   }
 
@@ -32,22 +30,23 @@ export class OrganizationService {
     return this.prisma.company.findMany();
   }
 
-  // Branch CRUD
-  async createBranch(dto: any) {
-    return this.prisma.branch.create({ data: { name: dto.name, companyId: dto.companyId } });
+  async createBranch(dto: CreateBranchDto) {
+    return this.prisma.branch.create({
+      data: { name: dto.name, code: dto.code, companyId: dto.companyId },
+    });
   }
 
-  async getBranch(id: number) {
+  async getBranch(id: string) {
     const branch = await this.prisma.branch.findUnique({ where: { id } });
     if (!branch) throw new NotFoundException('Branch not found');
     return branch;
   }
 
-  async updateBranch(id: number, dto: any) {
-    return this.prisma.branch.update({ where: { id }, data: { ...dto } });
+  async updateBranch(id: string, dto: UpdateBranchDto) {
+    return this.prisma.branch.update({ where: { id }, data: dto });
   }
 
-  async deleteBranch(id: number) {
+  async deleteBranch(id: string) {
     return this.prisma.branch.delete({ where: { id } });
   }
 
@@ -55,28 +54,32 @@ export class OrganizationService {
     return this.prisma.branch.findMany();
   }
 
-  // Warehouse CRUD
-  async createWarehouse(dto: any) {
-    return this.prisma.warehouse.create({ data: { name: dto.name, branchId: dto.branchId } });
+  async createWarehouse(dto: CreateWarehouseDto) {
+    return this.prisma.warehouse.create({
+      data: {
+        name: dto.name,
+        code: dto.code,
+        companyId: dto.companyId,
+        branchId: dto.branchId,
+      },
+    });
   }
 
-  async getWarehouse(id: number) {
-    const wh = await this.prisma.warehouse.findUnique({ where: { id } });
-    if (!wh) throw new NotFoundException('Warehouse not found');
-    return wh;
+  async getWarehouse(id: string) {
+    const warehouse = await this.prisma.warehouse.findUnique({ where: { id } });
+    if (!warehouse) throw new NotFoundException('Warehouse not found');
+    return warehouse;
   }
 
-  async updateWarehouse(id: number, dto: any) {
-    return this.prisma.warehouse.update({ where: { id }, data: { ...dto } });
+  async updateWarehouse(id: string, dto: UpdateWarehouseDto) {
+    return this.prisma.warehouse.update({ where: { id }, data: dto });
   }
 
-  async deleteWarehouse(id: number) {
+  async deleteWarehouse(id: string) {
     return this.prisma.warehouse.delete({ where: { id } });
   }
 
   async listWarehouses() {
     return this.prisma.warehouse.findMany();
   }
-
-  // Similar methods can be added for Branch and Warehouse as needed.
 }

@@ -1,6 +1,8 @@
 export class CreateWarehouseDto {
-  name: string;
-  branchId: number;
+  name!: string;
+  code!: string;
+  companyId!: string;
+  branchId?: string;
   // Additional optional fields (e.g., location) can be added later.
 }
 

@@ -1,5 +1,6 @@
 export class CreateCompanyDto {
-  name: string;
+  name!: string;
+  code!: string;
   // Additional fields can be added as needed, e.g., address, taxId, etc.
 }
 
