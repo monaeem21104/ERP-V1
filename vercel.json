@@ -1,23 +1,27 @@
 {
-  "version": 2,
-  "builds": [
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "api": {
+      "root": "apps/api",
+      "framework": "nestjs"
+    },
+    "web": {
+      "root": "apps/web",
+      "framework": "vite"
+    }
+  },
+  "rewrites": [
     {
-      "src": "apps/api/package.json",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["prisma/schema.prisma", "prisma/migrations/**"]
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "api"
       }
     },
     {
-      "src": "apps/web/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
       }
     }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "apps/api/$1" },
-    { "src": "/(.*)", "dest": "apps/web/$1" }
   ]
 }
