@@ -1,0 +1,6 @@
+# Local development: run only infrastructure. Start API/web with npm scripts.
+services:
+  api:
+    profiles: ["full"]
+  web:
+    profiles: ["full"]

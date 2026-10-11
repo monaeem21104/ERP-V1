@@ -1,0 +1,25 @@
+{
+  "name": "industrial-erp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-oriented industrial ERP management system",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "docker compose up -d postgres redis minio && npm run dev --workspaces --if-present",
+    "dev:api": "npm run start:dev -w @erp/api",
+    "dev:web": "npm run dev -w @erp/web",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e -w @erp/api && npm run test:e2e -w @erp/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "prisma:generate": "npm run prisma:generate -w @erp/api",
+    "prisma:migrate": "npm run prisma:migrate -w @erp/api",
+    "prisma:seed": "npm run prisma:seed -w @erp/api"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
